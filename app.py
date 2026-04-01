@@ -18,6 +18,15 @@ def view_all():
             print(contact_key +": " + contact_value)
         print("=" * 20)
 
+def find_contact():
+    contact = input("Contact Name: ")
+    if contact in contact_book:
+        for contact_key, contact_value in contact_book[contact].items():
+            print(contact_key + ": " + contact_value)
+        print("=" * 20)
+    else:
+        print("Contact was not found.")
+
 
 def display_options():
     while True:
@@ -26,7 +35,7 @@ def display_options():
         if user_selection == "add":
             add_contact()
         elif user_selection == "search":
-            pass
+            find_contact()
         elif user_selection == "delete":
             pass
         elif user_selection == "all":
