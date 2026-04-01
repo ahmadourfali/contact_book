@@ -27,6 +27,13 @@ def find_contact():
     else:
         print("Contact was not found.")
 
+def remove_contact():
+    contact = input("Name: ")
+    if contact in contact_book:
+        contact_book.pop(contact)
+        print(f"{contact} was removed.")
+    else:
+        print("Contact was not found.")
 
 def display_options():
     while True:
@@ -37,7 +44,7 @@ def display_options():
         elif user_selection == "search":
             find_contact()
         elif user_selection == "delete":
-            pass
+            remove_contact()
         elif user_selection == "all":
             view_all()
         elif user_selection == "exit":
