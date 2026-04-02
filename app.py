@@ -1,4 +1,15 @@
+import json
 contact_book = {}
+
+def load_data():
+    with open("data.json", "r") as f:
+        data = json.load(f)
+        return(data)
+
+def save_data():
+    with open("data.json", "w") as f:
+        json.dump(contact_book, f)
+
 
 def add_contact():
     new_contact = {}
@@ -11,11 +22,16 @@ def add_contact():
     new_contact["Address"] = address
 
     contact_book[new_contact["Name"]] = new_contact
+    save_data()
 
 def view_all():
-    for contacts in contact_book.values():
-        for contact_key, contact_value in contacts.items():
-            print(contact_key +": " + contact_value)
+    if contact_book.values():
+        for contacts in contact_book.values():
+            for contact_key, contact_value in contacts.items():
+                print(contact_key +": " + contact_value)
+            print("=" * 20)
+    else:
+        print("There are no contacts to view.")
         print("=" * 20)
 
 def find_contact():
@@ -34,8 +50,12 @@ def remove_contact():
         print(f"{contact} was removed.")
     else:
         print("Contact was not found.")
+        save_data()
 
 def display_options():
+    saved_data = load_data()
+    contact_book.update(saved_data)
+            
     while True:
         user_selection = input("Select action (add | search | delete | all | exit) : ").lower()
 
@@ -55,4 +75,3 @@ def display_options():
 
 
 display_options()
-
