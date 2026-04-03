@@ -2,20 +2,32 @@ import json
 contact_book = {}
 
 def load_data():
-    with open("data.json", "r") as f:
-        data = json.load(f)
-        return(data)
+    try:
+        with open("data.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print("File was not found.")
+        return {}
 
 def save_data():
     with open("data.json", "w") as f:
         json.dump(contact_book, f)
 
+def validate_input(prompt):
+    while True:
+        user_input = input(prompt)
+        if user_input.replace(" ", "").isalpha() or user_input.isdigit() and len(user_input) < 20:
+            return user_input
+        else:
+            print("enter a valid name or address <Not more than 20 letters and numbers> ")
+            continue
+
 
 def add_contact():
     new_contact = {}
-    name = input("Name: ")
-    phone = input("Phone Number: ")
-    address = input("Address: ")
+    name = validate_input("Name: ")
+    phone = validate_input("Phone Number: ")
+    address = validate_input("Address: ")
 
     new_contact["Name"] = name
     new_contact["Phone"] = phone
@@ -36,6 +48,7 @@ def view_all():
 
 def find_contact():
     contact = input("Contact Name: ")
+    print("=" * 20)
     if contact in contact_book:
         for contact_key, contact_value in contact_book[contact].items():
             print(contact_key + ": " + contact_value)
@@ -50,14 +63,16 @@ def remove_contact():
         print(f"{contact} was removed.")
     else:
         print("Contact was not found.")
-        save_data()
+    save_data()
 
 def display_options():
     saved_data = load_data()
     contact_book.update(saved_data)
             
     while True:
+        print("=" * 60)
         user_selection = input("Select action (add | search | delete | all | exit) : ").lower()
+        print("=" * 60)
 
         if user_selection == "add":
             add_contact()
